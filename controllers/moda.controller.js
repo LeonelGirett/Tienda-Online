@@ -50,7 +50,7 @@ const storeModa = (req, res) => {
 const updateModa = (req, res) => {
     const {id_moda} = req.params;
     const {nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada} = req.body;
-    const sql ="UPDATE moda SET nombre_producto = ?, descripcion = ?, categoria = ?, genero = ?, marca = ?, id_material = ?, id_color = ?, id_inventario = ?, id_proveedor = ?, id_temporada = ? WHERE id_pelicula = ?";
+    const sql ="UPDATE moda SET nombre_producto = ?, descripcion = ?, categoria = ?, genero = ?, marca = ?, id_material = ?, id_color = ?, id_inventario = ?, id_proveedor = ?, id_temporada = ? WHERE id_moda = ?";
     db.query(sql,[nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada,id_moda], (error, result) => {
         console.log(result);
         if(error){
