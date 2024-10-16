@@ -1,16 +1,18 @@
-// CONFIGURAR LO QUE SERIA UN SERVIDOR CON LAS MINIMAS PRESTACIONES PARA CORRER EXPRESS
-// Que este escuchando y tengamos una ruta principal "/" en el proyecto
-
 const express = require("express");
 const app = express();
 
 app.use(express.json());
-// en el cuerpo de la peticion viene un json, lo voy a transformar en un objeto JS y de esta manera
-// lo voy a poder utilizar
 
-const peliculasRouter = require('./routers/moda.router');
-app.use('/moda', peliculasRouter);
 
+
+//Router de Moda
+const Router = require('./routers/moda.router');
+app.use('/moda', Router);
+
+
+//Router de material
+const RouterMaterial = require('./routers/material.router');
+app.use('/material',RouterMaterial);
 
 
 app.get("/", (req, res) => {
