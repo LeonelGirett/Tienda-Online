@@ -2,9 +2,8 @@ const db = require("../db/db");
 
 //// METODO GET  /////
 
-
-const allMaterial = (req, res) => {
-    const sql = "SELECT * FROM material";
+const allTemporada = (req, res) => {
+    const sql = "SELECT * FROM temporada";
     db.query(sql, (error, rows) => {
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -13,17 +12,16 @@ const allMaterial = (req, res) => {
     }); 
 };
 
-
-const showMaterial = (req, res) => {
-    const {id_material} = req.params;
-    const sql = "SELECT * FROM material WHERE id_material = ?";
-    db.query(sql,[id_material], (error, rows) => {
+const showTemporada = (req, res) => {
+    const {id_temporada} = req.params;
+    const sql = "SELECT * FROM temporada WHERE id_temporada = ?";
+    db.query(sql,[id_temporada], (error, rows) => {
         console.log(rows);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
         }
         if(rows.length == 0){
-            return res.status(404).send({error : "ERROR: No existe el material a buscar"});
+            return res.status(404).send({error : "ERROR: No existe la temporada a buscar"});
         };
         res.json(rows[0]); 
         // me muestra el elemento en la posicion cero si existe.
@@ -31,10 +29,10 @@ const showMaterial = (req, res) => {
 };
 
 //// METODO POST  ////
-const storeMaterial = (req, res) => {
-    const {nombre_material, descripcion} = req.body;
-    const sql = "INSERT INTO material (nombre_material,descripcion) VALUES (?,?)";
-    db.query(sql,[nombre_material, descripcion], (error, result) => {
+const storeTemporada = (req, res) => {
+    const {nombre_temporada} = req.body;
+    const sql = "INSERT INTO temporada (nombre_temporada) VALUES (?)";
+    db.query(sql,[nombre_temporada], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -46,17 +44,17 @@ const storeMaterial = (req, res) => {
 };
 
 //// METODO PUT  ////
-const updateMaterial = (req, res) => {
-    const {id_material} = req.params;
-    const {nombre_material, descripcion} = req.body;
-    const sql ="UPDATE material SET nombre_material = ?, descripcion = ? WHERE id_material = ?";
-    db.query(sql,[nombre_material,descripcion,id_material], (error, result) => {
+const updateTemporada = (req, res) => {
+    const {id_temporada} = req.params;
+    const {nombre_temporada} = req.body;
+    const sql ="UPDATE temporada SET nombre_temporada = ?, WHERE id_temporada = ?";
+    db.query(sql,[nombre_temporada,id_temporada], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
         }
         if(result.affectedRows == 0){
-            return res.status(404).send({error : "ERROR: no existe el material a modificar no existe"});
+            return res.status(404).send({error : "ERROR: no existe la temporada a modificar no existe"});
         };
         
         const moda = {...req.body, ...req.params}; // ... reconstruir el objeto del body
@@ -67,27 +65,27 @@ const updateMaterial = (req, res) => {
 
 
 //// METODO DELETE ////
-const destroyMaterial = (req, res) => {
-    const {id_material} = req.params;
-    const sql = "DELETE FROM material WHERE id_material = ?";
-    db.query(sql,[id_material], (error, result) => {
+const destroyTemporada = (req, res) => {
+    const {id_temporada} = req.params;
+    const sql = "DELETE FROM temporada WHERE id_temporada = ?";
+    db.query(sql,[id_temporada], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
         }
         if(result.affectedRows == 0){
-            return res.status(404).send({error : "ERROR: el material a borrar no existe"});
+            return res.status(404).send({error : "ERROR: la temporada a borrar no existe"});
         };
-        res.json({mesaje : "Material Eliminado"});
+        res.json({mesaje : "Temporada Eliminado"});
     }); 
 };
 
 
 // EXPORTAR DEL MODULO TODAS LAS FUNCIONES
 module.exports = {
-   allMaterial,
-   showMaterial,
-   storeMaterial,
-   updateMaterial,
-   destroyMaterial
+   allTemporada,
+   showTemporada,
+   storeTemporada,
+   updateTemporada,
+   destroyTemporada
 };
