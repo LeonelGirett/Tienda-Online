@@ -47,7 +47,7 @@ const storeTemporada = (req, res) => {
 const updateTemporada = (req, res) => {
     const {id_temporada} = req.params;
     const {nombre_temporada} = req.body;
-    const sql ="UPDATE temporada SET nombre_temporada = ?, WHERE id_temporada = ?";
+    const sql ="UPDATE temporada SET nombre_temporada = ? WHERE id_temporada = ?";
     db.query(sql,[nombre_temporada,id_temporada], (error, result) => {
         console.log(result);
         if(error){
