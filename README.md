@@ -10,4 +10,4 @@
 ------------
 
 ***Captura de Pantalla***
-Puedes acceder a todas las capturas de pantalla desde la carpeta [captura](./captura/).
+Puedes acceder a todas las capturas de pantalla (***GET - POST - PUT - DELETE***) desde la carpeta [captura](./captura/).
