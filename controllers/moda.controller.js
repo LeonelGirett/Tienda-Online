@@ -55,7 +55,7 @@ const showModa = (req, res) => {
             material mat ON m.id_material = mat.id_material
         JOIN 
             temporada t ON m.id_temporada = t.id_temporada
-        WHERE id_material = ?
+        WHERE id_moda= ?
     `;
     db.query(sql,[id_moda], (error, rows) => {
         console.log(rows);
