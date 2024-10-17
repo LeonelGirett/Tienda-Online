@@ -19,3 +19,4 @@
 ![alt text](/captura/image-3.png)
 - Delete
 ![alt text](/captura/image-4.png)
+Puedes acceder a todas las capturas de pantalla desde la carpeta [captura](./captura/).

@@ -3,9 +3,28 @@ const db = require("../db/db");
 
 //// METODO GET  /////
 
-// Para todos las peliculas
+
 const allModa = (req, res) => {
-    const sql = "SELECT * FROM moda";
+    const sql = `
+        SELECT 
+            m.id_moda,
+            m.nombre_producto,
+            m.descripcion,
+            m.categoria,
+            m.genero,
+            m.marca,
+            mat.nombre_material,
+            m.id_color,
+            m.id_inventario,
+            m.id_proveedor,
+            t.nombre_temporada
+        FROM 
+            moda m
+        JOIN 
+            material mat ON m.id_material = mat.id_material
+        JOIN 
+            temporada t ON m.id_temporada = t.id_temporada;
+    `;
     db.query(sql, (error, rows) => {
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -14,10 +33,30 @@ const allModa = (req, res) => {
     }); 
 };
 
-// Para una pelicula
+
 const showModa = (req, res) => {
     const {id_moda} = req.params;
-    const sql = "SELECT * FROM moda WHERE id_moda = ?";
+    const sql = `
+        SELECT 
+            m.id_moda,
+            m.nombre_producto,
+            m.descripcion,
+            m.categoria,
+            m.genero,
+            m.marca,
+            mat.nombre_material,
+            m.id_color,
+            m.id_inventario,
+            m.id_proveedor,
+            t.nombre_temporada
+        FROM 
+            moda m
+        JOIN 
+            material mat ON m.id_material = mat.id_material
+        JOIN 
+            temporada t ON m.id_temporada = t.id_temporada
+        WHERE id_material = ?
+    `;
     db.query(sql,[id_moda], (error, rows) => {
         console.log(rows);
         if(error){
