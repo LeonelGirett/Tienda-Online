@@ -16,14 +16,16 @@ const allModa = (req, res) => {
             mat.nombre_material,
             m.id_color,
             m.id_inventario,
-            m.id_proveedor,
+            p.nombre_empresa,
             t.nombre_temporada
         FROM 
             moda m
         JOIN 
             material mat ON m.id_material = mat.id_material
         JOIN 
-            temporada t ON m.id_temporada = t.id_temporada;
+            temporada t ON m.id_temporada = t.id_temporada
+        JOIN
+            proveedor p on m.id_proveedor = p.id_proveedor
     `;
     db.query(sql, (error, rows) => {
         if(error){
@@ -47,7 +49,7 @@ const showModa = (req, res) => {
             mat.nombre_material,
             m.id_color,
             m.id_inventario,
-            m.id_proveedor,
+            p.nombre_empresa,
             t.nombre_temporada
         FROM 
             moda m
@@ -55,6 +57,8 @@ const showModa = (req, res) => {
             material mat ON m.id_material = mat.id_material
         JOIN 
             temporada t ON m.id_temporada = t.id_temporada
+        JOIN
+            proveedor p on m.id_proveedor = p.id_proveedor
         WHERE id_moda= ?
     `;
     db.query(sql,[id_moda], (error, rows) => {
