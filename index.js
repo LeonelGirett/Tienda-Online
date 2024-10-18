@@ -7,7 +7,6 @@ app.use(express.json());
 const Router = require('./routers/moda.router');
 app.use('/moda', Router);
 
-
 //Router de material
 const RouterMaterial = require('./routers/material.router');
 app.use('/material',RouterMaterial);
@@ -15,6 +14,10 @@ app.use('/material',RouterMaterial);
 //Router de temporada
 const RouterTemporada = require('./routers/temporada.router');
 app.use('/temporada',RouterTemporada);
+
+//Router de Proveedor
+const RouterProveedor = require('./routers/proveedor.router');
+app.use('/proveedor',RouterProveedor);
 
 
 app.get("/", (req, res) => {
