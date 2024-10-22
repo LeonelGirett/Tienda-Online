@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 const express = require("express");
 const app = express();
 
@@ -19,11 +21,18 @@ app.use('/temporada',RouterTemporada);
 const RouterProveedor = require('./routers/proveedor.router');
 app.use('/proveedor',RouterProveedor);
 
+//Router de registro
+const RouterRegistro = require("./routers/auth.router"); 
+app.use("/auth", RouterRegistro);
+
+//Router de Usuario
+const RouterUsuario = require('./routers/usuario.router');
+app.use('/login', RouterUsuario);
 
 app.get("/", (req, res) => {
     res.send("Hola HomeMaster!!!");
 });
 // Esta es la ruta principal del proyecto "/"
 
-const PORT = 3010;
+const PORT = process.env.PORT || 3010 ;
 app.listen(PORT, ()=> console.log(`http://localhost:${PORT}`));
