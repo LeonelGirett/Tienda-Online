@@ -1,6 +1,7 @@
 const db = require("../db/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const usuario = require("../models/user.models");
 
 //// METODO POST   /////
 
@@ -13,7 +14,7 @@ const register = (req, res) => {
         imageName = req.file.filename;
     };
 
-    const { nombre, mail, password,imagen, id_rol} = req.body;
+    const { nombre, mail, password, id_rol} = req.body;
 
     // Verificar si el usuario ya existe
     db.query('SELECT * FROM usuario WHERE mail = ?', [mail], (error, results) => {
@@ -76,10 +77,10 @@ const login = (req, res) => {
             return res.status(404).send("User not found.");
         }
 
-        const usuario = results[0];
+        const user = results[0];
 
         // Comparar la contraseña
-        bcrypt.compare(password, usuario.password, (err, passwordIsValid) => {
+        bcrypt.compare(password, user.Password, (err, passwordIsValid) => {
             console.log(password)
             if (err) {
                 console.error("Error comparing passwords:", err);
