@@ -41,7 +41,7 @@ const upload = multer({
 
 
 //// METODO POST  ////
-router.post('/',upload.single('imagen'), controller.register);
+router.post('/registro',upload.single('imagen'), controller.register);
 router.post('/login', controller.login);
 
 
@@ -59,6 +59,10 @@ router.put('/:id_usuario', upload.single('imagen'), controller.updateUser);
 
 //// METODO DELETE ////
 router.delete('/:id_usuario', controller.destroyUser);
+
+router.get("/protected",authMiddleware,(req,res)=>{
+    res.status(200).send(`Hola Usuario ${req.userId}`)
+});
 
 // EXPORTAR ROUTERS
 module.exports = router;

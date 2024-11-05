@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 
 //// METODO POST   /////
 
+// Función para registrar usuario
 const register = (req, res) => {
     console.log(req.file);
     let imageName = "";
@@ -12,67 +13,87 @@ const register = (req, res) => {
         imageName = req.file.filename;
     };
 
-    const { nombre, mail, password,id_rol} = req.body;
-    //Encryptacion
-    bcrypt.hash(password,10,(err,hashedPassword) => {
+    const { nombre, mail, password,imagen, id_rol} = req.body;
 
-        if(err){
-            return res.status(500).send("Error de encriptacion");
-        }
-        const sql = 'INSERT INTO usuario (nombre, mail, password,imagen,id_rol) VALUES (?,?,?,?,?)';
-        db.query(sql,[nombre, mail,hashedPassword,imageName,id_rol], (error, rows) => {
-            console.log(rows);
-            if(error){
-                return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
-            }
-            if(rows.length == 0){
-                return res.status(404).send({error : "ERROR: No existe el usuario buscado"});
-            };
-            res.json(rows[0]); 
-            // me muestra el elemento en la posicion cero si existe.
-        });
-    });   
-};
-
-const login = (req, res) => {
-    const { mail, password } = req.body;
-
-    const sql = "SELECT * FROM usuario WHERE mail = ?";
-    db.query(sql, [mail], (error, rows) => {
+    // Verificar si el usuario ya existe
+    db.query('SELECT * FROM usuario WHERE mail = ?', [mail], (error, results) => {
         if (error) {
-            return res.status(500).json({ error: "Error en la base de datos" });
+            console.error("Registration error:", error);
+            return res.status(500).send("Error checking user existence");
         }
 
-        // Si el usuario no existe
-        if (rows.length === 0) {
-            return res.status(404).json({ error: "Usuario no encontrado" });
+        if (results.length > 0) {
+            return res.status(400).send("User with that email already exists.");
         }
-
-        const user = rows[0];
-
-        // Comparar la contraseña ingresada con bcrypt
-        bcrypt.compare(password, user.password, (err, result) => {
+        
+        // Encriptar la contraseña
+        bcrypt.hash(password, 8, (err, hash) => {
             if (err) {
-                return res.status(500).json({ error: "Error en la verificación de contraseña" });
+                console.error("Error hashing password:", err);
+                return res.status(500).send("Error hashing password.");
             }
 
-            if (!result) {
-                return res.status(401).json({ error: "Contraseña incorrecta" });
-            }
+            // Insertar nuevo usuario en la base de datos
+            db.query('INSERT INTO usuario (nombre, mail, password, imagen, id_rol) VALUES (?, ?, ?, ?, ?)', [nombre,mail, hash, imageName,id_rol], (insertError, insertResults) => {
+                if (insertError) {
+                    console.error("Error inserting user:", insertError);
+                    return res.status(500).send("Error registering user");
+                }
 
-            // Checkear el rol del usuario
-            if (user.id_rol === 1) {
-                return res.json({ message: "Bienvenido Admin", user });
-            } else if (user.id_rol === 2) {
-                return res.json({ message: "Bienvenido Usuario", user });
-            } else {
-                return res.status(403).json({ error: "Rol no autorizado" });
-            }
+                // Obtener el ID del usuario recién creado
+                const id_usuario = insertResults.insertId;
+
+                // Generar un token JWT con el ID del usuario
+                const token = jwt.sign({ id: id_usuario }, process.env.SECRET_KEY, {
+                    expiresIn: "1h",
+                });
+
+                // Enviar la respuesta con el token
+                res.status(201).send({ auth: true, token });
+            });
         });
     });
 };
 
+// Función para hacer login
+const login = (req, res) => {
+    const { mail, password } = req.body;
+    // Buscar al usuario por correo electrónico
+    db.query('SELECT * FROM usuario WHERE mail = ?', [mail], (error, results) => {
+        if (error) {
+            //console.error("Login error:", error);
+            return res.status(500).send("Error during login");
+        }
 
+        // Verificar si el usuario existe
+        if (results.length === 0) {
+            return res.status(404).send("User not found.");
+        }
+
+        const usuario = results[0];
+
+        // Comparar la contraseña
+        bcrypt.compare(password, usuario.password, (err, passwordIsValid) => {
+            console.log(password)
+            if (err) {
+                console.error("Error comparing passwords:", err);
+                return res.status(500).send("Error comparing passwords");
+            }
+
+            if (!passwordIsValid) {
+                return res.status(401).send({ auth: false, token: null });
+            }
+
+            // Generar un token JWT con el ID del usuario
+            const token = jwt.sign({ id: usuario.id_usuario }, process.env.SECRET_KEY, {
+                expiresIn: "1h",
+            });
+
+            // Enviar la respuesta con el token
+            res.send({ auth: true, token });
+        });
+    });
+};
 
 //// METODO GET  /////
 

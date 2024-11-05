@@ -4,10 +4,17 @@ const db = require("../db/db"); // Importar la conexión a la base de datos
 
 // Función para registrar usuario
 const register = (req, res) => {
-    const { nombre, mail, password } = req.body;
+    console.log(req.file);
+    let imageName = "";
+
+    if(req.file){
+        imageName = req.file.filename;
+    };
+
+    const { nombre, mail, password,imagen, id_rol} = req.body;
 
     // Verificar si el usuario ya existe
-    db.query('SELECT * FROM usuario WHERE mail = ?', [mail], (error, results) => {
+    db.query('SELECT * FROM usuario WHERE email = ?', [email], (error, results) => {
         if (error) {
             console.error("Registration error:", error);
             return res.status(500).send("Error checking user existence");
@@ -16,26 +23,26 @@ const register = (req, res) => {
         if (results.length > 0) {
             return res.status(400).send("User with that email already exists.");
         }
-
+        
         // Encriptar la contraseña
         bcrypt.hash(password, 8, (err, hash) => {
             if (err) {
                 console.error("Error hashing password:", err);
-                return res.status(500).send("Error hashing password");
+                return res.status(500).send("Error hashing password.");
             }
 
             // Insertar nuevo usuario en la base de datos
-            db.query('INSERT INTO usuario (nombre, mail, password) VALUES (?, ?, ?)', [nombre, mail, hash], (insertError, insertResults) => {
+            db.query('INSERT INTO usuario (nombre, mail, password, imagen, id_rol) VALUES (?, ?, ?, ?, ?)', [nombre,mail, hash, imageName,id_rol], (insertError, insertResults) => {
                 if (insertError) {
                     console.error("Error inserting user:", insertError);
                     return res.status(500).send("Error registering user");
                 }
 
                 // Obtener el ID del usuario recién creado
-                const userId = insertResults.insertId;
+                const id_usuario = insertResults.insertId;
 
                 // Generar un token JWT con el ID del usuario
-                const token = jwt.sign({ id: userId }, process.env.SECRET_KEY, {
+                const token = jwt.sign({ id: id_usuario }, process.env.SECRET_KEY, {
                     expiresIn: "1h",
                 });
 
