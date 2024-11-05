@@ -80,7 +80,7 @@ const login = (req, res) => {
         const user = results[0];
 
         // Comparar la contraseña
-        bcrypt.compare(password, user.Password, (err, passwordIsValid) => {
+        bcrypt.compare(password, user.password, (err, passwordIsValid) => {
             console.log(password)
             if (err) {
                 console.error("Error comparing passwords:", err);
