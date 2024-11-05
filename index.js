@@ -22,12 +22,12 @@ const RouterProveedor = require('./routers/proveedor.router');
 app.use('/proveedor',RouterProveedor);
 
 //Router de registro
-const RouterRegistro = require("./routers/auth.router"); 
-app.use("/auth", RouterRegistro);
+//const RouterRegistro = require("./routers/auth.router"); 
+//app.use("/auth", RouterRegistro);
 
 //Router de Usuario
 const RouterUsuario = require('./routers/usuario.router');
-app.use('/login', RouterUsuario);
+app.use('/usuario', RouterUsuario);
 
 app.get("/", (req, res) => {
     res.send("Hola HomeMaster!!!");
