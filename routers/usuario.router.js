@@ -42,7 +42,7 @@ const upload = multer({
 
 //// METODO POST  ////
 router.post('/',upload.single('imagen'), controller.register);
-//router.post('/login', controller.login);
+router.post('/login', controller.login);
 
 
 
