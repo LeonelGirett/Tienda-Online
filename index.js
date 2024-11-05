@@ -21,7 +21,7 @@ app.use('/temporada',RouterTemporada);
 const RouterProveedor = require('./routers/proveedor.router');
 app.use('/proveedor',RouterProveedor);
 
-//Router de registro
+//Router de registro NO SE USA --> PASO TODO AL USUARIO
 //const RouterRegistro = require("./routers/auth.router"); 
 //app.use("/auth", RouterRegistro);
 

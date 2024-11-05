@@ -55,6 +55,12 @@ const register = (req, res) => {
     });
 };
 
+
+
+
+
+// ESTA PARTE NO ME ESTARIA FUNCIONANDO EL LOGIN VERIFICANDO CON EL POSTMAN
+//REVISAR 
 // Función para hacer login
 const login = (req, res) => {
     const { mail, password } = req.body;
