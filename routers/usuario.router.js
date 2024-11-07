@@ -44,15 +44,12 @@ const upload = multer({
 router.post('/registro',upload.single('imagen'), controller.register);
 router.post('/login', controller.login);
 
-
-
 //// METODO GET  /////
 // Para todos los productos
 router.get('/', controller.allUsers);
 
 // Para un producto
 router.get('/:id_usuario', controller.showUser);
-
 
 //// METODO PUT  ////
 router.put('/:id_usuario', upload.single('imagen'), controller.updateUser);
