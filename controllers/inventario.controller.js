@@ -4,7 +4,21 @@ const db = require("../db/db");
 
 
 const allInventario = (req, res) => {
-    const sql = "SELECT * FROM material";
+    const sql = `
+        SELECT 
+        i.id_inventario,
+        i.stock,
+        i.ubicacion_almacen,
+        i.fecha_ingreso,
+        m.nombre_producto,
+        p.nombre_empresa
+    FROM 
+        inventario i
+    JOIN 
+        moda m ON i.id_moda = m.id_moda
+    JOIN 
+        proveedor p ON i.id_proveedor = p.id_proveedor;
+    `;
     db.query(sql, (error, rows) => {
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -15,15 +29,31 @@ const allInventario = (req, res) => {
 
 
 const showInventario = (req, res) => {
-    const {id_material} = req.params;
-    const sql = "SELECT * FROM material WHERE id_material = ?";
-    db.query(sql,[id_material], (error, rows) => {
+    const {id_inventario} = req.params;
+    const sql = `
+        SELECT 
+        i.id_inventario,
+        i.stock,
+        i.ubicacion_almacen,
+        i.fecha_ingreso,
+        m.nombre_producto,
+        p.nombre_empresa
+    FROM 
+        inventario i
+    JOIN 
+        moda m ON i.id_moda = m.id_moda
+    JOIN 
+        proveedor p ON i.id_proveedor = p.id_proveedor
+    WHERE 
+    i.id_inventario = ?;
+    `;
+    db.query(sql,[id_inventario], (error, rows) => {
         console.log(rows);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
         }
         if(rows.length == 0){
-            return res.status(404).send({error : "ERROR: No existe el material a buscar"});
+            return res.status(404).send({error : "ERROR: No existe el inventario a buscar"});
         };
         res.json(rows[0]); 
         // me muestra el elemento en la posicion cero si existe.
@@ -32,9 +62,9 @@ const showInventario = (req, res) => {
 
 //// METODO POST  ////
 const storeInventario = (req, res) => {
-    const {nombre_material, descripcion} = req.body;
-    const sql = "INSERT INTO material (nombre_material,descripcion) VALUES (?,?)";
-    db.query(sql,[nombre_material, descripcion], (error, result) => {
+    const {stock,ubicacion_almacen,precio,fecha_ingreso,id_moda,id_proveedor} = req.body;
+    const sql = "INSERT INTO inventario (stock,ubicacion_almacen,precio,fecha_ingreso,id_moda,id_proveedor) VALUES (?,?,?,?,?,?)";
+    db.query(sql,[stock,ubicacion_almacen,precio,fecha_ingreso,id_moda,id_proveedor], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -47,16 +77,16 @@ const storeInventario = (req, res) => {
 
 //// METODO PUT  ////
 const updateInventario = (req, res) => {
-    const {id_material} = req.params;
-    const {nombre_material, descripcion} = req.body;
-    const sql ="UPDATE material SET nombre_material = ?, descripcion = ? WHERE id_material = ?";
-    db.query(sql,[nombre_material,descripcion,id_material], (error, result) => {
+    const {id_inventario} = req.params;
+    const {stock,ubicacion_almacen,precio,fecha_ingreso,id_moda,id_proveedor} = req.body;
+    const sql ="UPDATE inventario SET stock = ?, ubicacion_almacen = ? , precio = ?, fecha_ingreso = ?, id_moda = ?, id_proveedor = ? WHERE id_inventario = ?";
+    db.query(sql,[stock,ubicacion_almacen,precio,fecha_ingreso,id_moda,id_proveedor,id_inventario], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
         }
         if(result.affectedRows == 0){
-            return res.status(404).send({error : "ERROR: no existe el material a modificar no existe"});
+            return res.status(404).send({error : "ERROR: no existe el inventario a modificar no existe"});
         };
         
         const moda = {...req.body, ...req.params}; // ... reconstruir el objeto del body
