@@ -7,25 +7,23 @@ const db = require("../db/db");
 const allModa = (req, res) => {
     const sql = `
         SELECT 
-            m.id_moda,
-            m.nombre_producto,
-            m.descripcion,
-            m.categoria,
-            m.genero,
-            m.marca,
-            mat.nombre_material,
-            m.id_color,
-            m.id_inventario,
-            p.nombre_empresa,
-            t.nombre_temporada
-        FROM 
-            moda m
-        JOIN 
-            material mat ON m.id_material = mat.id_material
-        JOIN 
-            temporada t ON m.id_temporada = t.id_temporada
-        JOIN
-            proveedor p on m.id_proveedor = p.id_proveedor
+    m.id_moda,
+    m.nombre_producto,
+    m.descripcion,
+    m.categoria,
+    m.genero,
+    m.marca,
+    mat.nombre_material,
+    c.descripcion AS descripcion_color,
+    t.nombre_temporada
+FROM 
+    moda m
+JOIN 
+    material mat ON m.id_material = mat.id_material
+JOIN 
+    color c ON m.id_color = c.id_color
+JOIN 
+    temporada t ON m.id_temporada = t.id_temporada
     `;
     db.query(sql, (error, rows) => {
         if(error){
@@ -40,26 +38,25 @@ const showModa = (req, res) => {
     const {id_moda} = req.params;
     const sql = `
         SELECT 
-            m.id_moda,
-            m.nombre_producto,
-            m.descripcion,
-            m.categoria,
-            m.genero,
-            m.marca,
-            mat.nombre_material,
-            m.id_color,
-            m.id_inventario,
-            p.nombre_empresa,
-            t.nombre_temporada
-        FROM 
-            moda m
-        JOIN 
-            material mat ON m.id_material = mat.id_material
-        JOIN 
-            temporada t ON m.id_temporada = t.id_temporada
-        JOIN
-            proveedor p on m.id_proveedor = p.id_proveedor
-        WHERE id_moda= ?
+    m.id_moda,
+    m.nombre_producto,
+    m.descripcion,
+    m.categoria,
+    m.genero,
+    m.marca,
+    mat.nombre_material,
+    c.descripcion AS descripcion_color,
+    t.nombre_temporada
+FROM 
+    moda m
+JOIN 
+    material mat ON m.id_material = mat.id_material
+JOIN 
+    color c ON m.id_color = c.id_color
+JOIN 
+    temporada t ON m.id_temporada = t.id_temporada
+WHERE 
+    m.id_moda = ?;
     `;
     db.query(sql,[id_moda], (error, rows) => {
         console.log(rows);
@@ -76,9 +73,9 @@ const showModa = (req, res) => {
 
 //// METODO POST  ////
 const storeModa = (req, res) => {
-    const {nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada} = req.body;
-    const sql = "INSERT INTO moda (nombre_producto,descripcion,categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    db.query(sql,[nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada], (error, result) => {
+    const {nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_temporada} = req.body;
+    const sql = "INSERT INTO moda (nombre_producto,descripcion,categoria,genero,marca,id_material,id_color,id_temporada) VALUES (?,?,?,?,?,?,?,?)";
+    db.query(sql,[nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_temporada], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
@@ -92,9 +89,9 @@ const storeModa = (req, res) => {
 //// METODO PUT  ////
 const updateModa = (req, res) => {
     const {id_moda} = req.params;
-    const {nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada} = req.body;
-    const sql ="UPDATE moda SET nombre_producto = ?, descripcion = ?, categoria = ?, genero = ?, marca = ?, id_material = ?, id_color = ?, id_inventario = ?, id_proveedor = ?, id_temporada = ? WHERE id_moda = ?";
-    db.query(sql,[nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_inventario,id_proveedor,id_temporada,id_moda], (error, result) => {
+    const {nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_temporada} = req.body;
+    const sql ="UPDATE moda SET nombre_producto = ?, descripcion = ?, categoria = ?, genero = ?, marca = ?, id_material = ?, id_color = ?, id_temporada = ? WHERE id_moda = ?";
+    db.query(sql,[nombre_producto, descripcion, categoria,genero,marca,id_material,id_color,id_temporada,id_moda], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
