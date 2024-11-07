@@ -21,6 +21,10 @@ app.use('/temporada',RouterTemporada);
 const RouterProveedor = require('./routers/proveedor.router');
 app.use('/proveedor',RouterProveedor);
 
+//Router de Proveedor
+const RouterInventario = require('./routers/inventario.router');
+app.use('/inventario',RouterInventario);
+
 //Router de Usuario
 const RouterUsuario = require('./routers/usuario.router');
 app.use('/usuario', RouterUsuario);
