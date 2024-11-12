@@ -98,9 +98,9 @@ const updateInventario = (req, res) => {
 
 //// METODO DELETE ////
 const destroyInventario = (req, res) => {
-    const {id_material} = req.params;
+    const {id_inventario} = req.params;
     const sql = "DELETE FROM inventario WHERE id_inventario = ?";
-    db.query(sql,[id_material], (error, result) => {
+    db.query(sql,[id_inventario], (error, result) => {
         console.log(result);
         if(error){
             return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});

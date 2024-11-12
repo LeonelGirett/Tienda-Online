@@ -19,7 +19,7 @@ router.post('/', controller.storeInventario);
 router.put('/:id_inventario', controller.updateInventario);
 
 //// METODO DELETE ////
-router.delete('/:id_invenario', controller.destroyInventario);
+router.delete('/:id_inventario', controller.destroyInventario);
 
 // EXPORTAR ROUTERS
 module.exports = router;
