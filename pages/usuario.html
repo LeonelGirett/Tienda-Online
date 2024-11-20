@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - CRUD</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav id="menu"></nav>
+        <div id="user-info">
+            <span id="username"></span>
+            <img id="user-photo" src="" alt="User Photo">
+            <button onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <h1>Gestión de Usuarios</h1>
+
+        <!-- Formulario para crear o editar un usuario -->
+        <form id="userForm">
+            <input type="hidden" id="userId">
+            <label for="username_1">Nombre de usuario:</label>
+            <input type="text" id="username_1" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" required>
+            <label for="email">Mail:</label>
+            <input type="email" id="email" required>
+            <label for="role">Rol:</label>
+            <select id="role" required>
+                <option value="admin">Administrador</option>
+                <option value="usuario_1">Usuario</option>
+                <!--<option value="usuario_2" selected>Usuario 2</option>-->
+            </select>
+            <!-- <div id="photo-container" style="width: 100px; height: 100px; background-size: cover; background-position: center; background-image: url('/public/upload/usuario_default.png');"></div> -->
+            <div id="photo-container"></div>
+            <label for="image">Subir imagen de perfil</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+
+            <button type="submit">Guardar</button>
+        </form>
+
+        <h2>Lista de Usuarios</h2>
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mail</th>
+                    <th>Rol</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los usuarios se llenarán dinámicamente aquí -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 App Inc. All rights reserved.</p>
+    </footer>
+
+   <!-- <script src="/js/menu.js"></script>-->
+    <script src="/js/registroMod.js"></script>
+
+</body>
+
+</html>

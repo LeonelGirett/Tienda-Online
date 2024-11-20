@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const usuario = require("../models/user.models");
 
+
 //// METODO POST   /////
 
 // Función para registrar usuario
@@ -100,18 +101,38 @@ const login = (req, res) => {
 //// METODO GET  /////
 
 const allUsers = (req, res) => {
-    const sql = "SELECT * FROM usuario";
+    const sql = `
+        SELECT 
+            usuario.id_usuario, 
+            usuario.nombre,
+            usuario.mail, 
+            usuario.imagen, 
+            rol.descripcion 
+        FROM usuario
+        INNER JOIN rol ON usuario.id_rol = rol.id_rol
+    `;
+
     db.query(sql, (error, rows) => {
-        if(error){
-            return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
+        if (error) {
+            return res.status(500).json({ error: "ERROR: Intente más tarde por favor" });
         }
         res.json(rows);
-    }); 
+    });
 };
 
 const showUser = (req, res) => {
     const {id_usuario} = req.params;
-    const sql = "SELECT * FROM usuario WHERE id_usuario = ?";
+    const sql = `
+        SELECT 
+            usuario.id_usuario, 
+            usuario.nombre,
+            usuario.mail,
+            usuario.imagen, 
+            rol.descripcion 
+        FROM usuario
+        INNER JOIN rol ON usuario.id_rol = rol.id_rol
+        WHERE usuario.id_usuario = ?
+    `;
     db.query(sql,[id_usuario], (error, rows) => {
         console.log(rows);
         if(error){
@@ -135,7 +156,7 @@ const updateUser = (req, res) => {
     };
 
     const {id_usuario} = req.params;
-    const {nombre, mail, password} = req.body;
+    const {nombre, mail, password, id_rol} = req.body;
 
     //Encryptacion
     bcrypt.hash(password,10,(err,hashedPassword) => {
@@ -143,8 +164,8 @@ const updateUser = (req, res) => {
         if(err){
             return res.status(500).send("Error de encriptacion");
         }
-        const sql ="UPDATE usuario SET nombre = ?, mail = ?, password = ?, imagen = ? WHERE id_usuario = ?";
-        db.query(sql,[nombre, mail, hashedPassword, imageName, id_usuario], (error, result) => {
+        const sql ="UPDATE usuario SET nombre = ?, mail = ?, password = ?, imagen = ? , id_rol = ? WHERE id_usuario = ?";
+        db.query(sql,[nombre, mail, hashedPassword, imageName,id_rol, id_usuario], (error, result) => {
             console.log(result);
             if(error){
                 return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
