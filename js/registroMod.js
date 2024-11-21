@@ -137,8 +137,8 @@ function editUser(id) {
             document.getElementById('username_1').value = user.nombre;
             document.getElementById('email').value = user.mail;
             document.getElementById('password').value = user.password;
-            document.getElementById('photo').value = "";
             document.getElementById('role').value = user.id_rol;
+            document.getElementById('photo').value = "";
 
             const imageUrl = `/uploads/${user.imagen}`;
             document.getElementById('photo-container').style.backgroundImage = `url(${imageUrl})`;
