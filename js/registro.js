@@ -40,13 +40,43 @@
         document.getElementById("loginForm").reset();
     });
 });*/
+
+document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById('nombre').value;
+    const mail = document.getElementById('mail').value;
+    const password = document.getElementById('contrasenia').value;
+    const imagen = document.getElementById('photo').value;
+    const rol = document.getElementById('idRol').value;
+
+    try {
+        const response = await fetch('/usuario/registro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username,mail, password, imagen,rol })
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+            document.getElementById('register-message').textContent = 'Registro exitoso. Ahora puedes iniciar sesión.';
+        } else {
+            document.getElementById('register-message').textContent = data.message || 'Error en el registro';
+        }
+    } catch (error) {
+        console.error('Error en el registro:', error);
+        document.getElementById('register-message').textContent = 'Ocurrió un error. Intenta nuevamente.';
+    }
+});
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const userListContainer = document.getElementById("userListContainer");
 
     // Función para obtener y mostrar usuarios
     function fetchUsers() {
         // Mostrar un mensaje de carga mientras se obtienen los datos
-        userListContainer.innerHTML = "<p class='loading'>Cargando usuarios...</p>";
+       // userListContainer.innerHTML = "<p class='loading'>Cargando usuarios...</p>";
 
         fetch("http://localhost:3010/usuario")
             .then(response => {
@@ -90,8 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             })
             .catch(error => {
-                console.error("Error al obtener los usuarios:", error);
-                userListContainer.innerHTML = "<p class='error'>Ocurrió un error al cargar los usuarios.</p>";
+               // console.error("Error al obtener los usuarios:", error);
+                //userListContainer.innerHTML = "<p class='error'>Ocurrió un error al cargar los usuarios.</p>";
             });
     }
 
