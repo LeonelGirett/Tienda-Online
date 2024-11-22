@@ -41,6 +41,8 @@
     });
 });*/
 
+//const { response } = require("express");
+
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -56,6 +58,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username,mail, password, imagen,rol })
         });
+        console.log(response);
         const data = await response.json();
 
         if (response.ok) {
