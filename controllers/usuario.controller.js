@@ -8,7 +8,7 @@ const usuario = require("../models/user.models");
 
 
 // Función para registrar usuario
-const register = (req, res) => {
+const register = async (req, res) => {
     const { nombre,mail,id_rol} = req.body;
     let imageName = "usuario_default.png";
     const hashedPassword = bcrypt.hash(password, 10);
