@@ -6,9 +6,18 @@ const usuario = require("../models/user.models");
 
 //// METODO POST   /////
 
+
 // Función para registrar usuario
 const register = (req, res) => {
-    console.log(req.file);
+    const { nombre,mail,id_rol} = req.body;
+    let imageName = "usuario_default.png";
+    const hashedPassword = bcrypt.hash(password, 10);
+    const query = 'INSERT INTO usuario (nombre, mail, password, imagen, id_rol) VALUES (?, ?, ?, ?, ?)';
+    db.query(query, [nombre,mail, hashedPassword, imageName,id_rol], (err, results) => {
+        if (err) return res.sendStatus(500);
+        res.json({ message: 'User registered successfully' });
+    });
+   /* console.log(req.file);
     let imageName = "";
 
     if(req.file){
@@ -54,7 +63,7 @@ const register = (req, res) => {
                 res.status(201).send({ auth: true, token });
             });
         });
-    });
+    });*/
 };
 
 
