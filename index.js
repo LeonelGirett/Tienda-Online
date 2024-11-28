@@ -8,6 +8,8 @@ const app = express();
 // Configuramos el CORS y el body-parser
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('pages'));
+app.use('/pages', express.static('pages'));
 
 app.use(express.json());
 

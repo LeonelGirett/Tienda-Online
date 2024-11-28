@@ -136,7 +136,43 @@
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
      <!-- Mi Script -->
      <script src="/js/app.js"></script>
-     <script src="/js/registro.js"></script>
+    <!-- <script src="/js/registro.js"></script> -->
+     <script>
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const username = document.getElementById('nombre').value;
+    const mail = document.getElementById('mail').value;
+    const password = document.getElementById('contrasenia').value;
+    const imagen = document.getElementById('photo').value;
+    const rol = document.getElementById('idRol').value;
+
+    console.log(username);
+    console.log(mail);
+    console.log(password);
+    console.log(imagen);
+    console.log(rol);
+    try {
+        const response = await fetch('/registro', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username,mail, password, imagen,rol })
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            document.getElementById('register-message').textContent = 'Registro exitoso. Ahora puedes iniciar sesión.';
+        } else {
+            document.getElementById('register-message').textContent = data.message || 'Error en el registro';
+        }
+    } catch (error) {
+        console.error('Error en el registro:', error);
+        document.getElementById('register-message').textContent = 'Ocurrió un error. Intenta nuevamente.';
+    }
+});
+
+     </script>
     <script>  
         AOS.init({
             duration: 1200,

@@ -53,7 +53,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const rol = document.getElementById('idRol').value;
 
     try {
-        const response = await fetch('/usuario/registro', {
+        const response = await fetch('usuario/registro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username,mail, password, imagen,rol })
