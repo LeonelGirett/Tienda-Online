@@ -42,7 +42,7 @@
 });*/
 
 //const { response } = require("express");
-
+/*
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -71,7 +71,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
         document.getElementById('register-message').textContent = 'Ocurrió un error. Intenta nuevamente.';
     }
 });
-
+*/
 
 document.addEventListener("DOMContentLoaded", function () {
     const userListContainer = document.getElementById("userListContainer");
