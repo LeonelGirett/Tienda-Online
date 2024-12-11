@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('pages'));
-app.use('/css', express.static('css'));
+app.use(express.static('public'));
 
 app.use(express.json());
 
