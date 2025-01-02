@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mostrar un mensaje de carga mientras se obtienen los datos
        // userListContainer.innerHTML = "<p class='loading'>Cargando usuarios...</p>";
 
-        fetch("http://localhost:3010/usuario")
+        fetch("/usuario")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Error al obtener los usuarios");

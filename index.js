@@ -10,6 +10,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('pages'));
 app.use(express.static('public'));
+app.use(express.static('uploads'));
+app.use(express.static(__dirname));
 
 app.use(express.json());
 
