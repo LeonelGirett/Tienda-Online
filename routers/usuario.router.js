@@ -7,6 +7,10 @@ const router = express.Router();
 const authMiddleware = require("../middleware/auth.middleware")
 const controller = require("../controllers/usuario.controller");
 
+router.use(express.static('pages'));
+router.use(express.static('public'));
+router.use(express.static('uploads'));
+router.use(express.static(__dirname));
 
 /// MULTER ///
 const multer = require("multer");

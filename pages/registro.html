@@ -88,10 +88,10 @@
                 </div>
                 <label for="image">Subir imagen de perfil</label>
                 <input type="file" id="photo" name="photo" accept="image/*">
-            <div class="user-box">
+                <div class="user-box">
                 <input type="text" id="idRol" placeholder="Repetir Contraseña">
                 <label>ID ROL</label>
-            </div>
+                </div>
                 <button type="submit">Iniciar Sesión</button>
             </form>
         </div>
@@ -153,7 +153,7 @@
     console.log(imagen);
     console.log(rol);
     try {
-        const response = await fetch('http://localhost:3010/registro', {
+        const response = await fetch('/registro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username,mail, password, imagen,rol })
